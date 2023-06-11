@@ -14,10 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 
 	middleware "github.com/deepmap/oapi-codegen/pkg/gin-middleware"
+
 	"github.com/hustcat/openapi-examples/petstore-v3/api"
+	"github.com/hustcat/openapi-examples/petstore-v3/pkg/petstore"
 )
 
-func NewGinPetServer(petStore *api.PetStore, port int) *http.Server {
+func NewGinPetServer(petStore *petstore.PetStore, port int) *http.Server {
 	swagger, err := api.GetSwagger()
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error loading swagger spec\n: %s", err)
@@ -49,7 +51,7 @@ func main() {
 	var port = flag.Int("port", 8080, "Port for test HTTP server")
 	flag.Parse()
 	// Create an instance of our handler which satisfies the generated interface
-	petStore := api.NewPetStore()
+	petStore := petstore.NewPetStore()
 	s := NewGinPetServer(petStore, *port)
 	// And we serve HTTP until the world ends.
 	log.Fatal(s.ListenAndServe())
